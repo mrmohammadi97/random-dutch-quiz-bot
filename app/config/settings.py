@@ -18,8 +18,8 @@ class Settings:
     DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
     # Quiz settings
-    NUMBER_RANGE_MIN = 1
-    NUMBER_RANGE_MAX = 100
+    NUMBER_RANGE_MIN = int(os.getenv('NUMBER_RANGE_MIN', 1))
+    NUMBER_RANGE_MAX = int(os.getenv('NUMBER_RANGE_MAX', 1000))
     TIME_MINUTES = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
 
 
