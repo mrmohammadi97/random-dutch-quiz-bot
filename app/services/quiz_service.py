@@ -14,7 +14,29 @@ class QuizService:
         self.user_service = UserService()
 
     def generate_number_question(self, user_id: int):
-        number = random.randint(settings.NUMBER_RANGE_MIN, settings.NUMBER_RANGE_MAX)
+        # Define probability ranges
+        rand = random.random()
+
+        # Try 60% < 100
+        if rand < 0.6 and settings.NUMBER_RANGE_MIN <= 99:
+            max_range = min(99, settings.NUMBER_RANGE_MAX)
+            number = random.randint(settings.NUMBER_RANGE_MIN, max_range)
+
+        # Try 30% 100-1000
+        elif rand < 0.9 and settings.NUMBER_RANGE_MAX >= 100:
+            min_range = max(100, settings.NUMBER_RANGE_MIN)
+            max_range = min(1000, settings.NUMBER_RANGE_MAX)
+            number = random.randint(min_range, max_range)
+
+        # Try 10% > 1000, fallback to any valid range
+        elif settings.NUMBER_RANGE_MAX > 1000:
+            min_range = max(1001, settings.NUMBER_RANGE_MIN)
+            number = random.randint(min_range, settings.NUMBER_RANGE_MAX)
+
+        else:
+            # Fallback: generate from any available range
+            number = random.randint(settings.NUMBER_RANGE_MIN, settings.NUMBER_RANGE_MAX)
+
         correct_answer = num2words(number, lang='nl')
 
         question_data = {'number': number}
